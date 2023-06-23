@@ -1,19 +1,20 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from .exceptions import InvalidAgeException
-from .utils import get_age
+from iaido.exceptions import InvalidAgeException
+from iaido.utils import get_age
 
 
 class Person(AbstractUser):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=20, unique=True)
-    date_of_birth = models.DateField()
-    age = models.IntegerField(blank=True, null=True)
+    phone = models.CharField(max_length=20)
+    date_of_birth = models.DateField(null=True)
+    age = models.IntegerField(null=True)
     username = models.CharField(max_length=30, unique=True)
-    password = models.CharField(max_length=30)
+
+    USERNAME_FIELD = 'username'
 
     def clean(self):
         calculated_age = self.age

@@ -1,42 +1,30 @@
+from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
 from .models import Person
 
 
 class PersonSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        hashed_password = make_password(password)
+        validated_data['password'] = hashed_password
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        if 'password' in validated_data:
+            password = validated_data.pop('password')
+            hashed_password = make_password(password)
+            validated_data['password'] = hashed_password
+        return super().update(instance, validated_data)
+
     class Meta:
         model = Person
-        fields = '__all__'
+        fields = ['id', 'first_name', 'last_name', 'email', 'phone', 'date_of_birth', 'age', 'username', 'password']
 
 
 class FilteredPersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
         fields = ['id', 'first_name', 'last_name', 'email', 'phone', 'date_of_birth', 'age']
-        extra_kwargs = {
-            'username': {'write_only': True},
-            'password': {'write_only': True},
-        }
-
-
-class PersonLoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField()
-
-    def validate(self, data):
-        username = data.get('username')
-        password = data.get('password')
-        if username and password:
-            user = Person.objects.get(username=username)
-            if user.check_password(password):
-                data['user'] = user
-            else:
-                raise serializers.ValidationError('Invalid credentials')
-        else:
-            raise serializers.ValidationError('Must include "username" and "password"')
-        return data
-
-
-class TokenSerializer(serializers.Serializer):
-    refresh = serializers.CharField()
-    access = serializers.CharField()
