@@ -5,6 +5,9 @@ from .models import Person
 
 
 class PersonSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Person model.
+    """
 
     def create(self, validated_data):
         password = validated_data.pop('password')
@@ -25,6 +28,9 @@ class PersonSerializer(serializers.ModelSerializer):
 
 
 class FilteredPersonSerializer(serializers.ModelSerializer):
+    """
+    Serializer for filtered Person model.
+    """
     class Meta:
         model = Person
         fields = ['id', 'first_name', 'last_name', 'email', 'phone', 'date_of_birth', 'age']

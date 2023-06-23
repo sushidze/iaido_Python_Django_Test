@@ -1,5 +1,6 @@
-import django_filters
 from datetime import date
+
+import django_filters
 
 from .models import Person
 

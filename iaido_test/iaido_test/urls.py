@@ -1,9 +1,9 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 from rest_framework.authtoken import views
 from rest_framework.routers import DefaultRouter
 
-from iaido.views import PersonViewSet, LoginView
+from iaido.views import LoginView, PersonViewSet
 
 router = DefaultRouter()
 router.register(r'persons', PersonViewSet)

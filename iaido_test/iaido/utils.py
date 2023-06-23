@@ -1,4 +1,5 @@
 from datetime import date
+
 from rest_framework.views import exception_handler
 
 
@@ -19,6 +20,9 @@ def custom_exception_handler(exc, context):
 
 
 def get_age(date_of_birth):
+    """
+    Function for calculating age from date.
+    """
     if date_of_birth is not None:
         today = date.today()
         years_difference = today.year - date_of_birth.year
