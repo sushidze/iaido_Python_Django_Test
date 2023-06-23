@@ -1,5 +1,6 @@
 from datetime import date
 from rest_framework.views import exception_handler
+from django.contrib.auth.management.commands.createsuperuser import Command as CreatesuperuserCommand
 
 
 def custom_exception_handler(exc, context):
@@ -26,3 +27,4 @@ def get_age(date_of_birth):
             (today.month == date_of_birth.month and today.day < date_of_birth.day)
     )
     return years_difference - int(is_before_birthday)
+
